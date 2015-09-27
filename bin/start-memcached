@@ -20,7 +20,7 @@ run-memcached() {
   mkfifo "$psmgr"
 
   # Start processes.
-  aux-start memcached SIGINT memcached
+  aux-start memcached SIGINT bin/memcached
   app-start SIGTERM "$@"
   pid=$!
 
