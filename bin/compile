@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+# fail fast
+set -e
+
+# heroku build log indentation strings
+indent_blank='      '
+indent_arrow='----->'
+indent_error=' !    '
+
+# parse and derive params
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+BIN_DIR="$(dirname $(dirname $0))/bin"
+
+echo "$indent_arrow Adding memcached binary into app/bin"
+mkdir -p "$BUILD_DIR/bin"
+tar -xzf "$BIN_DIR/memcached.tgz" -C "$BUILD_DIR/bin"
+chmod +x "$BUILD_DIR/bin/memcached"
+
+echo "$indent_arrow Copying the start-memcached script into app/bin"
+mkdir -p "$BUILD_DIR/bin"
+cp "$BIN_DIR/start-memcached" "$BUILD_DIR/bin"
+chmod +x $BUILD_DIR/bin/start-memcached
+
+echo "$indent_arrow memcached done"
+
